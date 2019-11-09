@@ -29,12 +29,30 @@ public class PlayerController : MonoBehaviour
         theRB.velocity = moveInput * moveSpeed;
 
         Vector3 mousePos = Input.mousePosition;
-        Vector3 screenPoint = Camera.main.WorldToScreenPoint(transform.localPosition);  //Calculate where the player is on the screen
+
+        //Calculate where the player is on the screen
+
+        Vector3 screenPoint = Camera.main.WorldToScreenPoint(transform.localPosition);
+
+        //Face the direction the bullet firing,
+
+        if (mousePos.x < screenPoint.x)
+        {
+            transform.localScale = new Vector3(-1f, 1f, 1f);
+            gunArm.localScale = new Vector3(-1f, -1f, 1f);
+        }
+        else
+        {
+            transform.localScale = Vector3.one;
+            gunArm.localScale = Vector3.one;
+        }
 
         // Rotate gun arm
 
         Vector2 offset = new Vector2(mousePos.x - screenPoint.x, mousePos.y - screenPoint.y);
         float angle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
         gunArm.rotation = Quaternion.Euler(0, 0, angle);
+
+
     }
 }
