@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+
     public float moveSpeed;
 
     private Vector2 moveInput;
@@ -19,6 +21,12 @@ public class PlayerController : MonoBehaviour
 
     public float timeBetweenShots;
     private float shotCounter;
+
+    private void Awake()
+    {
+        instance = this;  // this refers to this version of the script, whichever object has this script attached to it.    
+    }
+
 
 
     // Start is called before the first frame update

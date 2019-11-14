@@ -7,7 +7,11 @@ public class PlayerBullet : MonoBehaviour
 
     public float speed = 7.5f;
 
+    public int bulletDamage = 50;
+
     public Rigidbody2D theRb;
+
+    public GameObject impactEffectForBullet;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +31,18 @@ public class PlayerBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D otherCollider)
     {
+        Instantiate(impactEffectForBullet, transform.position, Quaternion.identity);
+        Destroy(gameObject);
+
+        if (otherCollider.tag == "Enemy")
+        {
+            otherCollider.GetComponent<EnemyController>().DamageEnemy(bulletDamage);
+        }
+    }
+
+    private void OnBecameInvisible()
+    {
         Destroy(gameObject);
     }
+
 }
