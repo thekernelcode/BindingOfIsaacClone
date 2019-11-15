@@ -25,6 +25,8 @@ public class EnemyController : MonoBehaviour
     public float fireRate;
     private float fireCounter;
 
+    public float shootRange;
+
     public SpriteRenderer theBody;
 
     // Start is called before the first frame update
@@ -51,7 +53,7 @@ public class EnemyController : MonoBehaviour
 
             theRB.velocity = moveDirection * moveSpeed;
 
-            if (shouldShoot)
+            if (shouldShoot && Vector3.Distance(transform.position, PlayerController.instance.transform.position) < shootRange)
             {
                 fireCounter -= Time.deltaTime;
                 if (fireCounter <= 0)
