@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     public float timeBetweenShots;
     private float shotCounter;
 
+    public SpriteRenderer bodySR;
+
     private void Awake()
     {
         instance = this;  // this refers to this version of the script, whichever object has this script attached to it.    
