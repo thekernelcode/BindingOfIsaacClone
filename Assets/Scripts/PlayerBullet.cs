@@ -23,12 +23,12 @@ public class PlayerBullet : MonoBehaviour
     void Update()
     {
         // Move to the right relative to this object i.e Move in the direction I'm facing...
-
         theRb.velocity = transform.right * speed;
 
 
     }
 
+    // Check for enemy entering our trigger collider
     private void OnTriggerEnter2D(Collider2D otherCollider)
     {
         Instantiate(impactEffectForBullet, transform.position, Quaternion.identity);
@@ -40,6 +40,7 @@ public class PlayerBullet : MonoBehaviour
         }
     }
 
+    // If disappears from camera view
     private void OnBecameInvisible()
     {
         Destroy(gameObject);

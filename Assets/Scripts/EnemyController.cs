@@ -38,8 +38,10 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Is the player alive and active
         if (theBody.isVisible && PlayerController.instance.gameObject.activeInHierarchy)
         {
+            // Check distance to player from EnemyController
             if (Vector3.Distance(transform.position, PlayerController.instance.transform.position) < rangeToChasePlayer)
             {
                 moveDirection = PlayerController.instance.transform.position - transform.position;
@@ -49,10 +51,13 @@ public class EnemyController : MonoBehaviour
                 moveDirection = Vector3.zero;
             }
 
+            // Make this a unit vector
             moveDirection.Normalize();
 
+            // Apply movement speed
             theRB.velocity = moveDirection * moveSpeed;
 
+            // Fire at player
             if (shouldShoot && Vector3.Distance(transform.position, PlayerController.instance.transform.position) < shootRange)
             {
                 fireCounter -= Time.deltaTime;
@@ -85,10 +90,12 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    // Apply damage to enemy
     public void DamageEnemy(int damage)
     {
         health -= damage;
 
+        // Show GFX for hitting
         Instantiate(hitEffect, transform.position, transform.rotation);
 
         if (health <= 0)
