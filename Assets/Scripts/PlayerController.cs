@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
 
-    public float moveSpeed;
+    public float walkSpeed;
 
     private Vector2 moveInput;
 
@@ -19,10 +19,20 @@ public class PlayerController : MonoBehaviour
     public GameObject bulletToFire;
     public Transform firePoint;
 
+    // Shot variables
+
     public float timeBetweenShots;
     private float shotCounter;
 
     public SpriteRenderer bodySR;
+
+    // Dash variables
+    private float activeMoveSpeed;
+    public float dashSpeed = 8f, dashLength = 0.5f, dashCooldown = 1f, dashInvincLength = 0.5f;
+
+    [HideInInspector]
+    public float dashCounter;
+    private float dashCoolCounter;
 
     private void Awake()
     {
@@ -34,7 +44,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        activeMoveSpeed = walkSpeed;
     }
 
     // Update is called once per frame
@@ -48,7 +58,7 @@ public class PlayerController : MonoBehaviour
 
         // transform.position += new Vector3(moveInput.x, moveInput.y, 0f) * moveSpeed * Time.deltaTime;
 
-        theRB.velocity = moveInput * moveSpeed;
+        theRB.velocity = moveInput * activeMoveSpeed;
 
         Vector3 mousePos = Input.mousePosition;
 
@@ -93,6 +103,37 @@ public class PlayerController : MonoBehaviour
                 shotCounter = timeBetweenShots;
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (dashCoolCounter <= 0 && dashCounter <= 0)  // Not in a dash cooldown state or in the middle of an already activated dash
+            {
+                activeMoveSpeed = dashSpeed;
+                dashCounter = dashLength;
+
+                PlayerHealthController.instance.MakeInvincible(dashInvincLength);
+
+                anim.SetTrigger("dash");
+            }
+           
+        }
+
+        if (dashCounter > 0)
+        {
+            dashCounter -= Time.deltaTime;
+            if (dashCounter <= 0)
+            {
+                activeMoveSpeed = walkSpeed;
+                dashCoolCounter = dashCooldown;
+            }
+        }
+
+        if (dashCoolCounter > 0)
+        {
+            dashCoolCounter -= Time.deltaTime;
+        }
+
+
 
 
 
